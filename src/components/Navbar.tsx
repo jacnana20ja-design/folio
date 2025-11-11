@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +26,12 @@ export default function Navbar() {
 
   const handleNavClick = (href: string) => {
     setIsMobileMenuOpen(false);
+
+    if (location.pathname !== '/') {
+      window.location.href = '/' + href;
+      return;
+    }
+
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -40,16 +48,19 @@ export default function Navbar() {
     >
       <div className="w-[90%] mx-auto px-6">
         <div className="flex items-center justify-between">
-          <a
-            href="#hero"
+          <button
             onClick={(e) => {
               e.preventDefault();
-              handleNavClick('#hero');
+              if (location.pathname !== '/') {
+                window.location.href = '/';
+              } else {
+                handleNavClick('#hero');
+              }
             }}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-none border-none cursor-pointer"
           >
             <img src="/logo officiel.png" alt="SW DEV Logo" className="h-12 w-auto" />
-          </a>
+          </button>
 
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (

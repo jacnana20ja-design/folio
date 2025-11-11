@@ -1,5 +1,5 @@
 import { Calendar, User, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const articles = [
   {
@@ -32,6 +32,15 @@ const articles = [
 ];
 
 export default function Blog() {
+  const navigate = useNavigate();
+
+  const handleReadMore = (articleId: string) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => {
+      navigate(`/blog/${articleId}`);
+    }, 300);
+  };
+
   return (
     <section id="blog" className="py-20 bg-white">
       <div className="container mx-auto px-6">
@@ -83,13 +92,13 @@ export default function Blog() {
                   {article.excerpt}
                 </p>
 
-                <Link
-                  to={`/blog/${article.id}`}
-                  className="flex items-center gap-2 text-[rgb(240,45,58)] hover:text-[rgb(220,35,48)] font-semibold transition-colors duration-300 group"
+                <button
+                  onClick={() => handleReadMore(article.id)}
+                  className="flex items-center gap-2 text-[rgb(240,45,58)] hover:text-[rgb(220,35,48)] font-semibold transition-colors duration-300 group bg-none border-none cursor-pointer"
                 >
                   <span>Lire la suite</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                </Link>
+                </button>
               </div>
             </article>
           ))}

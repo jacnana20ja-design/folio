@@ -139,14 +139,15 @@ export default function BlogArticle() {
   const navigate = useNavigate();
   const article = articleId ? articleContent[articleId] : null;
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [articleId]);
+
   const handleBackToBlog = () => {
-    navigate('/');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setTimeout(() => {
-      const blogSection = document.getElementById('blog');
-      if (blogSection) {
-        blogSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 0);
+      navigate('/');
+    }, 500);
   };
 
   if (!article) {
@@ -157,7 +158,7 @@ export default function BlogArticle() {
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Article non trouvé</h1>
             <button
               onClick={handleBackToBlog}
-              className="text-[rgb(240,45,58)] hover:text-[rgb(220,35,48)] font-semibold bg-none border-none cursor-pointer"
+              className="text-[rgb(240,45,58)] hover:text-[rgb(220,35,48)] font-semibold bg-none border-none cursor-pointer transition-colors duration-300"
             >
               Retour au blog
             </button>
