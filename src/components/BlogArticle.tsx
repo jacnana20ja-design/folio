@@ -1,5 +1,6 @@
 import { ArrowLeft, Calendar, User } from 'lucide-react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const articleContent: Record<string, { title: string; date: string; author: string; category: string; fullContent: string }> = {
   'tendances-web-design': {
@@ -135,7 +136,18 @@ const articleContent: Record<string, { title: string; date: string; author: stri
 
 export default function BlogArticle() {
   const { articleId } = useParams<{ articleId: string }>();
+  const navigate = useNavigate();
   const article = articleId ? articleContent[articleId] : null;
+
+  const handleBackToBlog = () => {
+    navigate('/');
+    setTimeout(() => {
+      const blogSection = document.getElementById('blog');
+      if (blogSection) {
+        blogSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 0);
+  };
 
   if (!article) {
     return (
@@ -143,9 +155,12 @@ export default function BlogArticle() {
         <div className="w-[90%] mx-auto py-20">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Article non trouvé</h1>
-            <Link to="/#blog" className="text-[rgb(240,45,58)] hover:text-[rgb(220,35,48)] font-semibold">
+            <button
+              onClick={handleBackToBlog}
+              className="text-[rgb(240,45,58)] hover:text-[rgb(220,35,48)] font-semibold bg-none border-none cursor-pointer"
+            >
               Retour au blog
-            </Link>
+            </button>
           </div>
         </div>
       </div>
@@ -155,13 +170,13 @@ export default function BlogArticle() {
   return (
     <div className="min-h-screen bg-white">
       <div className="w-[90%] mx-auto py-16">
-        <Link
-          to="/#blog"
-          className="flex items-center gap-2 text-[rgb(240,45,58)] hover:text-[rgb(220,35,48)] font-semibold mb-8 transition-colors duration-300"
+        <button
+          onClick={handleBackToBlog}
+          className="flex items-center gap-2 text-[rgb(240,45,58)] hover:text-[rgb(220,35,48)] font-semibold mb-8 transition-colors duration-300 bg-none border-none cursor-pointer"
         >
           <ArrowLeft className="w-5 h-5" />
           <span>Retour au blog</span>
-        </Link>
+        </button>
 
         <article className="max-w-3xl">
           <div className="flex items-center gap-6 text-sm text-gray-600 mb-8">
